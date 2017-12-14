@@ -18,11 +18,9 @@ namespace ch.wuerth.tobias.mux.Data.models
 
         [Required]
         [MaxLength(40)]
-        // todo index unique true
         public String MusicbrainzId { get; set; }
 
         [MaxLength(255)]
-        // todo index unique false
         public String Title { get; set; }
 
         [MaxLength(4096)]

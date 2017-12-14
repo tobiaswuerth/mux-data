@@ -20,7 +20,6 @@ namespace ch.wuerth.tobias.mux.Data.models
 
         [Required]
         [MaxLength(128)]
-        // todo index unique true
         [JsonIgnore]
         public String UniqueHash { get; set; }
 

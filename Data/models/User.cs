@@ -11,7 +11,6 @@ namespace ch.wuerth.tobias.mux.Data.models
         [Required]
         [MinLength(3)]
         [MaxLength(32)]
-        // todo index unique true
         public String Username { get; set; }
 
         [Required]

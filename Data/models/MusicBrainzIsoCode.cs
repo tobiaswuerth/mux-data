@@ -13,7 +13,6 @@ namespace ch.wuerth.tobias.mux.Data.models
         public Int32 UniqueId { get; set; }
 
         [MaxLength(3)]
-        // todo index unique true
         public String Code { get; set; }
     }
 }

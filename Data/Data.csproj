@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\modules\core\Core\Core.csproj" />
+    <ProjectReference Include="..\modules\mux-core\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

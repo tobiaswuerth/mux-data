@@ -2,4 +2,4 @@
 
 # mux-data
 
-Available as [nuget Package](https://www.nuget.org/packages/ch.wuerth.tobias.mux.Data/)
+Available as [NuGet Package](https://www.nuget.org/packages/ch.wuerth.tobias.mux.Data/)

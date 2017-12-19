@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ch.wuerth.tobias.mux.Core.models;
 using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
+    [Table("MusicBrainzArea")]
     public class MusicBrainzArea : IMusicBrainzArea
     {
         [JsonIgnore]

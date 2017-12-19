@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using ch.wuerth.tobias.mux.Core.exceptions;
 using ch.wuerth.tobias.mux.Core.io;
@@ -30,7 +31,8 @@ namespace ch.wuerth.tobias.mux.Data
                 }
 
                 _logger?.Information?.Log($"File '{DatabaseSettingsFilePath}' successfully created.");
-                _logger?.Information?.Log("Please edit the file and adjust as needed before restarting the application.");
+                _logger?.Information?.Log(
+                    "Please edit the file and adjust as needed before restarting the application.");
                 throw new ProcessAbortedException();
             }
 
@@ -48,7 +50,7 @@ namespace ch.wuerth.tobias.mux.Data
 
         private static String DatabaseSettingsFilePath
         {
-            get { return Path.Combine(Location.ApplicationDataDirectoryPath, @"\mux_config_database.json"); }
+            get { return Path.Combine(Location.ApplicationDataDirectoryPath, "mux_config_database.json"); }
         }
 
         public virtual DbSet<User> SetUsers { get; set; }
@@ -81,26 +83,84 @@ namespace ch.wuerth.tobias.mux.Data
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
-            modelBuilder.Entity<AcoustId>().HasIndex(x => x.Id).IsUnique();
-            modelBuilder.Entity<MusicBrainzAlias>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzAlias>().HasIndex(x => x.Name).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzArtist>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzArtist>().HasIndex(x => x.Name).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzArtistCredit>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzArtistCredit>().HasIndex(x => x.Name).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzRecord>().HasIndex(x => x.MusicbrainzId).IsUnique();
-            modelBuilder.Entity<MusicBrainzRecord>().HasIndex(x => x.Title).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzRelease>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzRelease>().HasIndex(x => x.Title).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzTag>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<Track>().HasIndex(x => x.Path).IsUnique();
-            modelBuilder.Entity<Track>().HasIndex(x => x.LastFingerprintCalculation).IsUnique(false);
-            modelBuilder.Entity<Track>().HasIndex(x => x.FingerprintHash).IsUnique(false);
-            modelBuilder.Entity<Track>().HasIndex(x => x.LastAcoustIdApiCall).IsUnique(false);
-            modelBuilder.Entity<MusicBrainzTextRepresentation>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzReleaseEvent>().HasIndex(x => x.UniqueHash).IsUnique();
-            modelBuilder.Entity<MusicBrainzIsoCode>().HasIndex(x => x.Code).IsUnique();
+            // index
+            modelBuilder.Entity<User>(x => { x.HasIndex(y => y.Username).IsUnique(); });
+            modelBuilder.Entity<AcoustId>(x =>
+            {
+                x.HasIndex(y => y.Id).IsUnique();
+                x.HasMany(y => y.MusicbrainzRecords);
+            });
+            modelBuilder.Entity<MusicBrainzAlias>(x =>
+            {
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasIndex(y => y.Name).IsUnique(false);
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasIndex(y => y.Name).IsUnique(false);
+                x.HasMany(y => y.Records);
+                x.HasMany(y => y.Releases);
+                x.HasMany(y => y.Artists);
+            });
+            modelBuilder.Entity<MusicBrainzArtistCredit>(x =>
+            {
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasIndex(y => y.Name).IsUnique(false);
+                x.HasMany(y => y.Records);
+                x.HasMany(y => y.Releases);
+            });
+            modelBuilder.Entity<MusicBrainzRecord>(x =>
+            {
+                x.HasIndex(y => y.MusicbrainzId).IsUnique();
+                x.HasIndex(y => y.Title).IsUnique(false);
+                x.HasMany(y => y.AcoustIds);
+                x.HasMany(y => y.Aliases);
+                x.HasMany(y => y.ArtistCredit);
+                x.HasMany(y => y.Releases);
+                x.HasMany(y => y.Tags);
+            });
+            modelBuilder.Entity<MusicBrainzRelease>(x =>
+            {
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasIndex(y => y.Title).IsUnique(false);
+                x.HasMany(y => y.Aliases);
+                x.HasMany(y => y.ArtistCredit);
+                x.HasMany(y => y.MusicBrainzRecords);
+                x.HasMany(y => y.ReleaseEvents);
+            });
+            modelBuilder.Entity<MusicBrainzTag>(x =>
+            {
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasMany(y => y.Records);
+            });
+            modelBuilder.Entity<Track>(x =>
+            {
+                x.HasIndex(y => y.Path).IsUnique();
+                x.HasIndex(y => y.LastFingerprintCalculation).IsUnique(false);
+                x.HasIndex(y => y.FingerprintHash).IsUnique(false);
+                x.HasIndex(y => y.LastAcoustIdApiCall).IsUnique(false);
+            });
+            modelBuilder.Entity<MusicBrainzTextRepresentation>(x => { x.HasIndex(y => y.UniqueHash).IsUnique(); });
+            modelBuilder.Entity<MusicBrainzReleaseEvent>(x =>
+            {
+                x.HasIndex(y => y.UniqueHash).IsUnique();
+                x.HasMany(y => y.Releases);
+                x.HasOne(y => y.Area).WithMany(y => y.ReleaseEvents);
+            });
+            modelBuilder.Entity<MusicBrainzIsoCode>(x =>
+            {
+                x.HasIndex(y => y.Code).IsUnique();
+                x.HasMany(y => y.Areas);
+            });
+            modelBuilder.Entity<MusicBrainzArea>(x =>
+            {
+                x.HasMany(y => y.Iso31661Codes);
+                x.HasMany(y => y.ReleaseEvents);
+            });
+            modelBuilder.Entity<MusicBrainzArtist>(x =>
+            {
+                x.HasMany(y => y.Aliases);
+                x.HasMany(y => y.Credits);
+
+            });
 
             _logger?.Information?.Log("Model created.");
         }

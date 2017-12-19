@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ch.wuerth.tobias.mux.Core.models;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
+    [Table("MusicBrainzRecord")]
     public class MusicBrainzRecord : IMusicBrainzRecord
     {
         public virtual List<AcoustId> AcoustIds { get; set; }

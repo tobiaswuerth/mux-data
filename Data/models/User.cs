@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
+    [Table("User")]
     public class User
     {
         [Key]

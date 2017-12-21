@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ch.wuerth.tobias.mux.Core.models;
+using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
@@ -11,7 +12,7 @@ namespace ch.wuerth.tobias.mux.Data.models
     public class MusicBrainzArtist : IMusicBrainzArtist
     {
         [JsonIgnore]
-        public virtual List<MusicBrainzAlias> Aliases { get; set; }
+        public virtual List<MusicBrainzArtistMusicBrainzAlias> MusicBrainzArtistMusicBrainzAliases { get; set; }
 
         [JsonIgnore]
         public virtual List<MusicBrainzArtistCredit> Credits { get; set; }

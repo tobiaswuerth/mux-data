@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ch.wuerth.tobias.mux.Core.models;
+using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
@@ -11,19 +12,28 @@ namespace ch.wuerth.tobias.mux.Data.models
     public class MusicBrainzRelease : IMusicBrainzRelease
     {
         [JsonIgnore]
-        public virtual List<MusicBrainzAlias> Aliases { get; set; }
+        public virtual List<MusicBrainzReleaseMusicBrainzAlias> MusicBrainzReleaseMusicBrainzAliases { get; set; }
 
         [JsonIgnore]
-        public virtual List<MusicBrainzReleaseEvent> ReleaseEvents { get; set; }
+        public virtual List<MusicBrainzReleaseEventMusicBrainzRelease> MusicBrainzReleaseEventMusicBrainzReleases
+        {
+            get;
+            set;
+        }
 
         [JsonIgnore]
-        public virtual List<MusicBrainzArtistCredit> ArtistCredit { get; set; }
+        public virtual List<MusicBrainzReleaseMusicBrainzArtistCredit> MusicBrainzReleaseMusicBrainzArtistCredits
+        {
+            get;
+            set;
+        }
 
         [JsonIgnore]
+        [ForeignKey("TextRepresentation_UniqueId")]
         public virtual MusicBrainzTextRepresentation TextRepresentation { get; set; }
 
         [JsonIgnore]
-        public virtual List<MusicBrainzRecord> MusicBrainzRecords { get; set; }
+        public virtual List<MusicBrainzReleaseMusicBrainzRecord> MusicBrainzReleaseMusicBrainzRecords { get; set; }
 
         [Key]
         [JsonIgnore]

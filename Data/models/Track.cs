@@ -18,7 +18,7 @@ namespace ch.wuerth.tobias.mux.Data.models
         [MinLength(3)]
         [MaxLength(2048)]
         public String Path { get; set; }
-        
+
         public DateTime? LastFingerprintCalculation { get; set; }
 
         public String FingerprintError { get; set; }
@@ -28,7 +28,7 @@ namespace ch.wuerth.tobias.mux.Data.models
 
         [MaxLength(128)]
         public String FingerprintHash { get; set; }
-        
+
         public DateTime? LastAcoustIdApiCall { get; set; }
 
         public override String ToString()

@@ -9,9 +9,11 @@ namespace ch.wuerth.tobias.mux.Data.models
     public class AcoustIdResult : IAcoustIdResult
     {
         [Required]
+        [ForeignKey("AcoustId_UniqueId")]
         public virtual AcoustId AcoustId { get; set; }
 
         [Required]
+        [ForeignKey("Track_UniqueId")]
         public virtual Track Track { get; set; }
 
         [Key]

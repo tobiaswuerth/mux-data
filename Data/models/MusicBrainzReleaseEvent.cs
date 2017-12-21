@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ch.wuerth.tobias.mux.Core.models;
+using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
@@ -11,10 +12,15 @@ namespace ch.wuerth.tobias.mux.Data.models
     public class MusicBrainzReleaseEvent : IMusicBrainzReleaseEvent
     {
         [JsonProperty]
+        [ForeignKey("Area_UniqueId")]
         public virtual MusicBrainzArea Area { get; set; }
 
         [JsonIgnore]
-        public virtual List<MusicBrainzRelease> Releases { get; set; }
+        public virtual List<MusicBrainzReleaseEventMusicBrainzRelease> MusicBrainzReleaseEventMusicBrainzReleases
+        {
+            get;
+            set;
+        }
 
         [Key]
         [JsonIgnore]

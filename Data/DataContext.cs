@@ -70,6 +70,15 @@ namespace ch.wuerth.tobias.mux.Data
 
         // shadow entities
         public virtual DbSet<MusicBrainzRecordAcoustId> SetMusicBrainzRecordAcoustId { get; set; }
+        public virtual DbSet<MusicBrainzAliasMusicBrainzRecord> SetMusicBrainzAliasMusicBrainzRecord { get; set; }
+        public virtual DbSet<MusicBrainzArtistCreditMusicBrainzRecord> SetMusicBrainzArtistCreditMusicBrainzRecord { get; set; }
+        public virtual DbSet<MusicBrainzArtistMusicBrainzAlias> SetMusicBrainzArtistMusicBrainzAlias { get; set; }
+        public virtual DbSet<MusicBrainzIsoCodeMusicBrainzArea> SetMusicBrainzIsoCodeMusicBrainzArea { get; set; }
+        public virtual DbSet<MusicBrainzReleaseEventMusicBrainzRelease> SetMusicBrainzReleaseEventMusicBrainzRelease { get; set; }
+        public virtual DbSet<MusicBrainzReleaseMusicBrainzAlias> SetMusicBrainzReleaseMusicBrainzAlias { get; set; }
+        public virtual DbSet<MusicBrainzReleaseMusicBrainzArtistCredit> SetMusicBrainzReleaseMusicBrainzArtistCredit { get; set; }
+        public virtual DbSet<MusicBrainzReleaseMusicBrainzRecord> SetMusicBrainzReleaseMusicBrainzRecord { get; set; }
+        public virtual DbSet<MusicBrainzTagMusicBrainzRecord> SetMusicBrainzTagMusicBrainzRecord { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -69,6 +69,9 @@ namespace ch.wuerth.tobias.mux.Data
         public virtual DbSet<MusicBrainzTextRepresentation> SetTextRepresentations { get; set; }
 
         // shadow entities
+        // these had to be added because of the switch from .net 4.x to .net core 2.x. EF in this version does not
+        // support many-to-many references yet without defining it explicitly
+        // https://docs.microsoft.com/en-us/ef/core/modeling/relationships#many-to-many
         public virtual DbSet<MusicBrainzRecordAcoustId> SetMusicBrainzRecordAcoustId { get; set; }
         public virtual DbSet<MusicBrainzAliasMusicBrainzRecord> SetMusicBrainzAliasMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistCreditMusicBrainzRecord> SetMusicBrainzArtistCreditMusicBrainzRecord { get; set; }

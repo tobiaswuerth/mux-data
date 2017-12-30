@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ch.wuerth.tobias.mux.Core.models;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
     [Table("AcoustIdResult")]
-    public class AcoustIdResult : IAcoustIdResult
+    public class AcoustIdResult
     {
         [Required]
         [ForeignKey("AcoustId_UniqueId")]

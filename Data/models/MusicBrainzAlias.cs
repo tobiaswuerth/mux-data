@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ch.wuerth.tobias.mux.Core.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
     [Table("MusicBrainzAlias")]
-    public class MusicBrainzAlias : IMusicBrainzAlias
+    public class MusicBrainzAlias
     {
         [JsonIgnore]
         public virtual List<MusicBrainzAliasMusicBrainzRecord> MusicBrainzAliasMusicBrainzRecords { get; set; }

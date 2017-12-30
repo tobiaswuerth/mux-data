@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ch.wuerth.tobias.mux.Core.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
     [Table("MusicBrainzRecord")]
-    public class MusicBrainzRecord : IMusicBrainzRecord
+    public class MusicBrainzRecord
     {
         public virtual List<MusicBrainzRecordAcoustId> MusicBrainzRecordAcoustIds { get; set; }
         public virtual List<MusicBrainzReleaseMusicBrainzRecord> MusicBrainzReleaseMusicBrainzRecords { get; set; }

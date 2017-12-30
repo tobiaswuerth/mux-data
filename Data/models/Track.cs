@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ch.wuerth.tobias.mux.Core.models;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
     [Table("Track")]
-    public class Track : ITrack
+    public class Track
     {
         public virtual List<AcoustIdResult> AcoustIdResults { get; set; }
 

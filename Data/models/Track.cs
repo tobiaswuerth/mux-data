@@ -30,6 +30,8 @@ namespace ch.wuerth.tobias.mux.Data.models
 
         public DateTime? LastAcoustIdApiCall { get; set; }
 
+        public String AcoustIdApiError { get; set; }
+
         public override String ToString()
         {
             return $"Track '{Path}'";

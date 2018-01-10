@@ -31,6 +31,7 @@ namespace ch.wuerth.tobias.mux.Data.models
         public DateTime? LastAcoustIdApiCall { get; set; }
 
         public String AcoustIdApiError { get; set; }
+        public Int32? AcoustIdApiErrorCode { get; set; }
 
         public override String ToString()
         {

@@ -4,11 +4,6 @@ namespace ch.wuerth.tobias.mux.Data
 {
     public class DatabaseConfig
     {
-        public DatabaseConfig()
-        {
-            ConnectionString = "Data Source=localhost;Initial Catalog=Mux;Integrated Security=True;Persist Security Info=False;User ID=;Password=;MultipleActiveResultSets=True;Connect Timeout=5;Encrypt=True;TrustServerCertificate=True;Application Name=Mux;ConnectRetryCount=3;ConnectRetryInterval=5";
-        }
-
-        public String ConnectionString { get; set; }
+        public String ConnectionString { get; set; } = "Data Source=localhost;Initial Catalog=Mux;Integrated Security=True;Persist Security Info=False;User ID=;Password=;MultipleActiveResultSets=True;Connect Timeout=5;Encrypt=True;TrustServerCertificate=True;Application Name=Mux;ConnectRetryCount=3;ConnectRetryInterval=5";
     }
 }

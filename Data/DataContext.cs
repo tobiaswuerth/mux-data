@@ -31,8 +31,7 @@ namespace ch.wuerth.tobias.mux.Data
                 }
 
                 _logger?.Information?.Log($"File '{DatabaseSettingsFilePath}' successfully created.");
-                _logger?.Information?.Log(
-                    "Please edit the file and adjust as needed before restarting the application.");
+                _logger?.Information?.Log("Please edit the file and adjust as needed before restarting the application.");
                 throw new ProcessAbortedException();
             }
 
@@ -50,7 +49,10 @@ namespace ch.wuerth.tobias.mux.Data
 
         private static String DatabaseSettingsFilePath
         {
-            get { return Path.Combine(Location.ApplicationDataDirectoryPath, "mux_config_database.json"); }
+            get
+            {
+                return Path.Combine(Location.ApplicationDataDirectoryPath, "mux_config_database.json");
+            }
         }
 
         public virtual DbSet<User> SetUsers { get; set; }
@@ -73,6 +75,7 @@ namespace ch.wuerth.tobias.mux.Data
         // support many-to-many references yet without defining it explicitly
         // https://docs.microsoft.com/en-us/ef/core/modeling/relationships#many-to-many
         public virtual DbSet<MusicBrainzRecordAcoustId> SetMusicBrainzRecordAcoustId { get; set; }
+
         public virtual DbSet<MusicBrainzAliasMusicBrainzRecord> SetMusicBrainzAliasMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistCreditMusicBrainzRecord> SetMusicBrainzArtistCreditMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistMusicBrainzAlias> SetMusicBrainzArtistMusicBrainzAlias { get; set; }
@@ -99,46 +102,16 @@ namespace ch.wuerth.tobias.mux.Data
             base.OnModelCreating(modelBuilder);
 
             // join tables / cross tables
-            modelBuilder.Entity<MusicBrainzRecordAcoustId>(x =>
-            {
-                x.HasKey("MusicBrainzRecordUniqueId", "AcoustIdUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzAliasMusicBrainzRecord>(x =>
-            {
-                x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzRecordUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzAlias>(x =>
-            {
-                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzAliasUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzArtistCredit>(x =>
-            {
-                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzArtistCreditUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzArtistCreditMusicBrainzRecord>(x =>
-            {
-                x.HasKey("MusicBrainzArtistCreditUniqueId", "MusicBrainzRecordUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzTagMusicBrainzRecord>(x =>
-            {
-                x.HasKey("MusicBrainzTagUniqueId", "MusicBrainzRecordUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzRecord>(x =>
-            {
-                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzRecordUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzReleaseEventMusicBrainzRelease>(x =>
-            {
-                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzReleaseEventUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzArtistMusicBrainzAlias>(x =>
-            {
-                x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzArtistUniqueId");
-            });
-            modelBuilder.Entity<MusicBrainzIsoCodeMusicBrainzArea>(x =>
-            {
-                x.HasKey("MusicBrainzIsoCodeUniqueId", "MusicBrainzAreaUniqueId");
-            });
+            modelBuilder.Entity<MusicBrainzRecordAcoustId>(x => { x.HasKey("MusicBrainzRecordUniqueId", "AcoustIdUniqueId"); });
+            modelBuilder.Entity<MusicBrainzAliasMusicBrainzRecord>(x => { x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzRecordUniqueId"); });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzAlias>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzAliasUniqueId"); });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzArtistCredit>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzArtistCreditUniqueId"); });
+            modelBuilder.Entity<MusicBrainzArtistCreditMusicBrainzRecord>(x => { x.HasKey("MusicBrainzArtistCreditUniqueId", "MusicBrainzRecordUniqueId"); });
+            modelBuilder.Entity<MusicBrainzTagMusicBrainzRecord>(x => { x.HasKey("MusicBrainzTagUniqueId", "MusicBrainzRecordUniqueId"); });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzRecord>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzRecordUniqueId"); });
+            modelBuilder.Entity<MusicBrainzReleaseEventMusicBrainzRelease>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzReleaseEventUniqueId"); });
+            modelBuilder.Entity<MusicBrainzArtistMusicBrainzAlias>(x => { x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzArtistUniqueId"); });
+            modelBuilder.Entity<MusicBrainzIsoCodeMusicBrainzArea>(x => { x.HasKey("MusicBrainzIsoCodeUniqueId", "MusicBrainzAreaUniqueId"); });
 
             // index and references
             modelBuilder.Entity<User>(x => { x.HasIndex(y => y.Username).IsUnique(); });

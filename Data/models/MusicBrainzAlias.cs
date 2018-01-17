@@ -7,60 +7,60 @@ using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("MusicBrainzAlias")]
+    [ Table("MusicBrainzAlias") ]
     public class MusicBrainzAlias
     {
-        [JsonIgnore]
+        [ JsonIgnore ]
         public virtual List<MusicBrainzAliasMusicBrainzRecord> MusicBrainzAliasMusicBrainzRecords { get; set; }
 
-        [JsonIgnore]
+        [ JsonIgnore ]
         public virtual List<MusicBrainzArtistMusicBrainzAlias> MusicBrainzArtistMusicBrainzAliases { get; set; }
 
-        [JsonIgnore]
+        [ JsonIgnore ]
         public virtual List<MusicBrainzReleaseMusicBrainzAlias> MusicBrainzReleaseMusicBrainzAliases { get; set; }
 
-        [Key]
-        [JsonIgnore]
+        [ Key ]
+        [ JsonIgnore ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
-        [MaxLength(128)]
-        [JsonIgnore]
+        [ Required ]
+        [ MaxLength(128) ]
+        [ JsonIgnore ]
         public String UniqueHash { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Begin { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Locale { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String TypeId { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String End { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Name { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Type { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String ShortName { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Primary { get; set; }
 
-        [JsonProperty]
+        [ JsonProperty ]
         public Boolean Ended { get; set; }
     }
 }

@@ -6,17 +6,17 @@ using ch.wuerth.tobias.mux.Data.models.shadowentities;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("AcoustId")]
+    [ Table("AcoustId") ]
     public class AcoustId
     {
         public virtual List<AcoustIdResult> AcoustIdResults { get; set; }
         public virtual List<MusicBrainzRecordAcoustId> MusicBrainzRecordAcoustIds { get; set; }
 
-        [Key]
+        [ Key ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
-        [MaxLength(40)]
+        [ Required ]
+        [ MaxLength(40) ]
         public String Id { get; set; }
     }
 }

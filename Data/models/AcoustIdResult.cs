@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("AcoustIdResult")]
+    [ Table("AcoustIdResult") ]
     public class AcoustIdResult
     {
-        [Required]
-        [ForeignKey("AcoustId_UniqueId")]
+        [ Required ]
+        [ ForeignKey("AcoustId_UniqueId") ]
         public virtual AcoustId AcoustId { get; set; }
 
-        [Required]
-        [ForeignKey("Track_UniqueId")]
+        [ Required ]
+        [ ForeignKey("Track_UniqueId") ]
         public virtual Track Track { get; set; }
 
-        [Key]
+        [ Key ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
+        [ Required ]
         public Double Score { get; set; }
     }
 }

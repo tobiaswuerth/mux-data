@@ -6,7 +6,7 @@ using ch.wuerth.tobias.mux.Data.models.shadowentities;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("MusicBrainzRecord")]
+    [ Table("MusicBrainzRecord") ]
     public class MusicBrainzRecord
     {
         public virtual List<MusicBrainzRecordAcoustId> MusicBrainzRecordAcoustIds { get; set; }
@@ -14,23 +14,19 @@ namespace ch.wuerth.tobias.mux.Data.models
         public virtual List<MusicBrainzAliasMusicBrainzRecord> MusicBrainzAliasMusicBrainzRecords { get; set; }
         public virtual List<MusicBrainzTagMusicBrainzRecord> MusicBrainzTagMusicBrainzRecords { get; set; }
 
-        public virtual List<MusicBrainzArtistCreditMusicBrainzRecord> MusicBrainzArtistCreditMusicBrainzRecords
-        {
-            get;
-            set;
-        }
+        public virtual List<MusicBrainzArtistCreditMusicBrainzRecord> MusicBrainzArtistCreditMusicBrainzRecords { get; set; }
 
-        [Key]
+        [ Key ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
-        [MaxLength(40)]
+        [ Required ]
+        [ MaxLength(40) ]
         public String MusicbrainzId { get; set; }
 
-        [MaxLength(255)]
+        [ MaxLength(255) ]
         public String Title { get; set; }
 
-        [MaxLength(4096)]
+        [ MaxLength(4096) ]
         public String Disambiguation { get; set; }
 
         public DateTime? LastMusicBrainzApiCall { get; set; }

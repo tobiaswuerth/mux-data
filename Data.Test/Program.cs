@@ -15,11 +15,11 @@ namespace ch.wuerth.tobias.mux.Data.Test
     {
         public Program()
         {
-            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>(),
-                new LoggerBundle
+            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()
+                , new LoggerBundle
                 {
-                    Exception = new ExceptionConsoleLogger(this),
-                    Information = new InformationConsoleLogger(null)
+                    Exception = new ExceptionConsoleLogger(this)
+                    , Information = new InformationConsoleLogger(null)
                 }))
             {
                 List<User> a = dc.SetUsers.ToList();
@@ -40,15 +40,12 @@ namespace ch.wuerth.tobias.mux.Data.Test
                 // shadow entities
                 List<MusicBrainzRecordAcoustId> z = dc.SetMusicBrainzRecordAcoustId.ToList();
                 List<MusicBrainzAliasMusicBrainzRecord> w = dc.SetMusicBrainzAliasMusicBrainzRecord.ToList();
-                List<MusicBrainzArtistCreditMusicBrainzRecord> o =
-                    dc.SetMusicBrainzArtistCreditMusicBrainzRecord.ToList();
+                List<MusicBrainzArtistCreditMusicBrainzRecord> o = dc.SetMusicBrainzArtistCreditMusicBrainzRecord.ToList();
                 List<MusicBrainzArtistMusicBrainzAlias> p = dc.SetMusicBrainzArtistMusicBrainzAlias.ToList();
                 List<MusicBrainzIsoCodeMusicBrainzArea> q = dc.SetMusicBrainzIsoCodeMusicBrainzArea.ToList();
-                List<MusicBrainzReleaseEventMusicBrainzRelease> r = dc.SetMusicBrainzReleaseEventMusicBrainzRelease
-                    .ToList();
+                List<MusicBrainzReleaseEventMusicBrainzRelease> r = dc.SetMusicBrainzReleaseEventMusicBrainzRelease.ToList();
                 List<MusicBrainzReleaseMusicBrainzAlias> s = dc.SetMusicBrainzReleaseMusicBrainzAlias.ToList();
-                List<MusicBrainzReleaseMusicBrainzArtistCredit> t = dc.SetMusicBrainzReleaseMusicBrainzArtistCredit
-                    .ToList();
+                List<MusicBrainzReleaseMusicBrainzArtistCredit> t = dc.SetMusicBrainzReleaseMusicBrainzArtistCredit.ToList();
                 List<MusicBrainzReleaseMusicBrainzRecord> u = dc.SetMusicBrainzReleaseMusicBrainzRecord.ToList();
                 List<MusicBrainzTagMusicBrainzRecord> v = dc.SetMusicBrainzTagMusicBrainzRecord.ToList();
             }

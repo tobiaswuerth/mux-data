@@ -7,43 +7,35 @@ using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("MusicBrainzArtistCredit")]
+    [ Table("MusicBrainzArtistCredit") ]
     public class MusicBrainzArtistCredit
     {
-        [Required]
-        [JsonIgnore]
-        [ForeignKey("Artist_UniqueId")]
+        [ Required ]
+        [ JsonIgnore ]
+        [ ForeignKey("Artist_UniqueId") ]
         public virtual MusicBrainzArtist Artist { get; set; }
 
-        [JsonIgnore]
-        public virtual List<MusicBrainzReleaseMusicBrainzArtistCredit> MusicBrainzReleaseMusicBrainzArtistCredits
-        {
-            get;
-            set;
-        }
+        [ JsonIgnore ]
+        public virtual List<MusicBrainzReleaseMusicBrainzArtistCredit> MusicBrainzReleaseMusicBrainzArtistCredits { get; set; }
 
-        [JsonIgnore]
-        public virtual List<MusicBrainzArtistCreditMusicBrainzRecord> MusicBrainzArtistCreditMusicBrainzRecords
-        {
-            get;
-            set;
-        }
+        [ JsonIgnore ]
+        public virtual List<MusicBrainzArtistCreditMusicBrainzRecord> MusicBrainzArtistCreditMusicBrainzRecords { get; set; }
 
-        [Key]
-        [JsonIgnore]
+        [ Key ]
+        [ JsonIgnore ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
-        [MaxLength(128)]
-        [JsonIgnore]
+        [ Required ]
+        [ MaxLength(128) ]
+        [ JsonIgnore ]
         public String UniqueHash { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Name { get; set; }
 
-        [MaxLength(4096)]
-        [JsonProperty]
+        [ MaxLength(4096) ]
+        [ JsonProperty ]
         public String Joinphrase { get; set; }
     }
 }

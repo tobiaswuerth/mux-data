@@ -6,15 +6,15 @@ using ch.wuerth.tobias.mux.Data.models.shadowentities;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("MusicBrainzIsoCode")]
+    [ Table("MusicBrainzIsoCode") ]
     public class MusicBrainzIsoCode
     {
         public virtual List<MusicBrainzIsoCodeMusicBrainzArea> MusicBrainzIsoCodeMusicBrainzAreas { get; set; }
 
-        [Key]
+        [ Key ]
         public Int32 UniqueId { get; set; }
 
-        [MaxLength(3)]
+        [ MaxLength(3) ]
         public String Code { get; set; }
     }
 }

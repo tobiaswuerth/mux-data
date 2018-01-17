@@ -7,34 +7,34 @@ using Newtonsoft.Json;
 
 namespace ch.wuerth.tobias.mux.Data.models
 {
-    [Table("MusicBrainzArtist")]
+    [ Table("MusicBrainzArtist") ]
     public class MusicBrainzArtist
     {
-        [JsonIgnore]
+        [ JsonIgnore ]
         public virtual List<MusicBrainzArtistMusicBrainzAlias> MusicBrainzArtistMusicBrainzAliases { get; set; }
 
-        [JsonIgnore]
+        [ JsonIgnore ]
         public virtual List<MusicBrainzArtistCredit> Credits { get; set; }
 
-        [Key]
-        [JsonIgnore]
+        [ Key ]
+        [ JsonIgnore ]
         public Int32 UniqueId { get; set; }
 
-        [Required]
-        [MaxLength(128)]
-        [JsonIgnore]
+        [ Required ]
+        [ MaxLength(128) ]
+        [ JsonIgnore ]
         public String UniqueHash { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String Name { get; set; }
 
-        [MaxLength(1024)]
-        [JsonProperty]
+        [ MaxLength(1024) ]
+        [ JsonProperty ]
         public String SortName { set; get; }
 
-        [MaxLength(4096)]
-        [JsonProperty]
+        [ MaxLength(4096) ]
+        [ JsonProperty ]
         public String Disambiguation { get; set; }
     }
 }

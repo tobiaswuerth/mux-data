@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ch.wuerth.tobias.mux.Core.events;
 using ch.wuerth.tobias.mux.Core.logging;
-using ch.wuerth.tobias.mux.Core.logging.exception;
-using ch.wuerth.tobias.mux.Core.logging.information;
 using ch.wuerth.tobias.mux.Data.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ch.wuerth.tobias.mux.Data.Test
 {
-    internal class Program : ICallback<Exception>
+    internal class Program 
     {
         public Program()
         {
-            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()
-                , new LoggerBundle
-                {
-                    Exception = new ExceptionConsoleLogger(this)
-                    , Information = new InformationConsoleLogger(null)
-                }))
+            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()))
             {
                 List<User> a = dc.SetUsers.ToList();
                 List<Track> b = dc.SetTracks.ToList();

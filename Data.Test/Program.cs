@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ch.wuerth.tobias.mux.Core.logging;
 using ch.wuerth.tobias.mux.Data.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ch.wuerth.tobias.mux.Data.Test
 {
-    internal class Program 
+    internal class Program
     {
         public Program()
         {

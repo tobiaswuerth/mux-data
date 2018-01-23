@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using ch.wuerth.tobias.mux.Core.exceptions;
-using ch.wuerth.tobias.mux.Core.io;
 using ch.wuerth.tobias.mux.Core.logging;
 using ch.wuerth.tobias.mux.Data.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
@@ -13,38 +11,20 @@ namespace ch.wuerth.tobias.mux.Data
     public class DataContext : DbContext
     {
         private readonly DatabaseConfig _config;
-        private readonly LoggerBundle _logger;
 
-        public DataContext(DbContextOptions<DataContext> options, LoggerBundle logger = null) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            _logger = logger;
-
-            _logger?.Information?.Log("Initializing data context...");
-
-            if (!File.Exists(DatabaseSettingsFilePath))
+            LoggerBundle.Debug("Initializing data context...");
+            try
             {
-                _logger?.Information?.Log($"File '{DatabaseSettingsFilePath}' not found. Trying to create it...");
-                Boolean save = FileInterface.Save(new DatabaseConfig(), DatabaseSettingsFilePath, true, _logger);
-                if (!save)
-                {
-                    throw new ProcessAbortedException();
-                }
-
-                _logger?.Information?.Log($"File '{DatabaseSettingsFilePath}' successfully created.");
-                _logger?.Information?.Log("Please edit the file and adjust as needed before restarting the application.");
-                throw new ProcessAbortedException();
+                _config = Configurator.Request<DatabaseConfig>(DatabaseSettingsFilePath);
             }
-
-            _logger?.Information?.Log($"Loading database config from '{DatabaseSettingsFilePath}'...");
-
-            (DatabaseConfig output, Boolean success) res = FileInterface.Read<DatabaseConfig>(DatabaseSettingsFilePath);
-            if (!res.success)
+            catch (Exception ex)
             {
-                throw new ProcessAbortedException();
+                LoggerBundle.Fatal("Could not load database config file", ex);
+                Environment.Exit(1);
             }
-
-            _config = res.output;
-            _logger?.Information?.Log("Context initialized.");
+            LoggerBundle.Debug("Context initialized.");
         }
 
         private static String DatabaseSettingsFilePath
@@ -80,38 +60,77 @@ namespace ch.wuerth.tobias.mux.Data
         public virtual DbSet<MusicBrainzArtistCreditMusicBrainzRecord> SetMusicBrainzArtistCreditMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistMusicBrainzAlias> SetMusicBrainzArtistMusicBrainzAlias { get; set; }
         public virtual DbSet<MusicBrainzIsoCodeMusicBrainzArea> SetMusicBrainzIsoCodeMusicBrainzArea { get; set; }
-        public virtual DbSet<MusicBrainzReleaseEventMusicBrainzRelease> SetMusicBrainzReleaseEventMusicBrainzRelease { get; set; }
+
+        public virtual DbSet<MusicBrainzReleaseEventMusicBrainzRelease> SetMusicBrainzReleaseEventMusicBrainzRelease
+        {
+            get;
+            set;
+        }
+
         public virtual DbSet<MusicBrainzReleaseMusicBrainzAlias> SetMusicBrainzReleaseMusicBrainzAlias { get; set; }
-        public virtual DbSet<MusicBrainzReleaseMusicBrainzArtistCredit> SetMusicBrainzReleaseMusicBrainzArtistCredit { get; set; }
+
+        public virtual DbSet<MusicBrainzReleaseMusicBrainzArtistCredit> SetMusicBrainzReleaseMusicBrainzArtistCredit
+        {
+            get;
+            set;
+        }
+
         public virtual DbSet<MusicBrainzReleaseMusicBrainzRecord> SetMusicBrainzReleaseMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzTagMusicBrainzRecord> SetMusicBrainzTagMusicBrainzRecord { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            _logger?.Information?.Log("Configuring context...");
+            LoggerBundle.Trace("Configuring context...");
 
             optionsBuilder.UseSqlServer(_config.ConnectionString);
 
-            _logger?.Information?.Log("Context configured.");
+            LoggerBundle.Trace("Context configured.");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _logger?.Information?.Log("Creating database model...");
+            LoggerBundle.Trace("Creating database model...");
 
             base.OnModelCreating(modelBuilder);
 
             // join tables / cross tables
             modelBuilder.Entity<MusicBrainzRecordAcoustId>(x => { x.HasKey("MusicBrainzRecordUniqueId", "AcoustIdUniqueId"); });
-            modelBuilder.Entity<MusicBrainzAliasMusicBrainzRecord>(x => { x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzRecordUniqueId"); });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzAlias>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzAliasUniqueId"); });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzArtistCredit>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzArtistCreditUniqueId"); });
-            modelBuilder.Entity<MusicBrainzArtistCreditMusicBrainzRecord>(x => { x.HasKey("MusicBrainzArtistCreditUniqueId", "MusicBrainzRecordUniqueId"); });
-            modelBuilder.Entity<MusicBrainzTagMusicBrainzRecord>(x => { x.HasKey("MusicBrainzTagUniqueId", "MusicBrainzRecordUniqueId"); });
-            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzRecord>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzRecordUniqueId"); });
-            modelBuilder.Entity<MusicBrainzReleaseEventMusicBrainzRelease>(x => { x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzReleaseEventUniqueId"); });
-            modelBuilder.Entity<MusicBrainzArtistMusicBrainzAlias>(x => { x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzArtistUniqueId"); });
-            modelBuilder.Entity<MusicBrainzIsoCodeMusicBrainzArea>(x => { x.HasKey("MusicBrainzIsoCodeUniqueId", "MusicBrainzAreaUniqueId"); });
+            modelBuilder.Entity<MusicBrainzAliasMusicBrainzRecord>(x =>
+            {
+                x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzRecordUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzAlias>(x =>
+            {
+                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzAliasUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzArtistCredit>(x =>
+            {
+                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzArtistCreditUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzArtistCreditMusicBrainzRecord>(x =>
+            {
+                x.HasKey("MusicBrainzArtistCreditUniqueId", "MusicBrainzRecordUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzTagMusicBrainzRecord>(x =>
+            {
+                x.HasKey("MusicBrainzTagUniqueId", "MusicBrainzRecordUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzReleaseMusicBrainzRecord>(x =>
+            {
+                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzRecordUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzReleaseEventMusicBrainzRelease>(x =>
+            {
+                x.HasKey("MusicBrainzReleaseUniqueId", "MusicBrainzReleaseEventUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzArtistMusicBrainzAlias>(x =>
+            {
+                x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzArtistUniqueId");
+            });
+            modelBuilder.Entity<MusicBrainzIsoCodeMusicBrainzArea>(x =>
+            {
+                x.HasKey("MusicBrainzIsoCodeUniqueId", "MusicBrainzAreaUniqueId");
+            });
 
             // index and references
             modelBuilder.Entity<User>(x => { x.HasIndex(y => y.Username).IsUnique(); });
@@ -199,7 +218,7 @@ namespace ch.wuerth.tobias.mux.Data
                 x.HasMany(y => y.Credits);
             });
 
-            _logger?.Information?.Log("Model created.");
+            LoggerBundle.Trace("Model created.");
         }
     }
 }

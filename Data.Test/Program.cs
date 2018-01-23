@@ -1,64 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ch.wuerth.tobias.mux.Core.events;
+using System.Reflection;
 using ch.wuerth.tobias.mux.Core.logging;
-using ch.wuerth.tobias.mux.Core.logging.exception;
-using ch.wuerth.tobias.mux.Core.logging.information;
 using ch.wuerth.tobias.mux.Data.models;
 using ch.wuerth.tobias.mux.Data.models.shadowentities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ch.wuerth.tobias.mux.Data.Test
 {
-    internal class Program : ICallback<Exception>
+    internal class Program
     {
-        public Program()
+        private static readonly HashSet<Type> _types = new HashSet<Type>
         {
-            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()
-                , new LoggerBundle
-                {
-                    Exception = new ExceptionConsoleLogger(this)
-                    , Information = new InformationConsoleLogger(null)
-                }))
+            typeof(Track)
+            , typeof(User)
+            , typeof(Track)
+            , typeof(AcoustId)
+            , typeof(AcoustIdResult)
+            , typeof(MusicBrainzRecord)
+            , typeof(MusicBrainzRelease)
+            , typeof(MusicBrainzReleaseEvent)
+            , typeof(MusicBrainzAlias)
+            , typeof(MusicBrainzArea)
+            , typeof(MusicBrainzArtist)
+            , typeof(MusicBrainzArtistCredit)
+            , typeof(MusicBrainzIsoCode)
+            , typeof(MusicBrainzTag)
+            , typeof(MusicBrainzTextRepresentation)
+            , typeof(MusicBrainzRecordAcoustId)
+            , typeof(MusicBrainzAliasMusicBrainzRecord)
+            , typeof(MusicBrainzArtistCreditMusicBrainzRecord)
+            , typeof(MusicBrainzArtistMusicBrainzAlias)
+            , typeof(MusicBrainzIsoCodeMusicBrainzArea)
+            , typeof(MusicBrainzReleaseEventMusicBrainzRelease)
+            , typeof(MusicBrainzReleaseMusicBrainzAlias)
+            , typeof(MusicBrainzReleaseMusicBrainzArtistCredit)
+            , typeof(MusicBrainzReleaseMusicBrainzRecord)
+            , typeof(MusicBrainzTagMusicBrainzRecord)
+        };
+
+        private Program()
+        {
+            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()))
             {
-                List<User> a = dc.SetUsers.ToList();
-                List<Track> b = dc.SetTracks.ToList();
-                List<AcoustId> c = dc.SetAcoustIds.ToList();
-                List<AcoustIdResult> d = dc.SetAcoustIdResults.ToList();
-                List<MusicBrainzRecord> e = dc.SetMusicBrainzRecords.ToList();
-                List<MusicBrainzRelease> f = dc.SetReleases.ToList();
-                List<MusicBrainzReleaseEvent> g = dc.SetReleaseEvents.ToList();
-                List<MusicBrainzAlias> h = dc.SetAliases.ToList();
-                List<MusicBrainzArea> i = dc.SetAreas.ToList();
-                List<MusicBrainzArtist> j = dc.SetArtists.ToList();
-                List<MusicBrainzArtistCredit> k = dc.SetArtistCredits.ToList();
-                List<MusicBrainzIsoCode> l = dc.SetIsoCodes.ToList();
-                List<MusicBrainzTag> m = dc.SetTags.ToList();
-                List<MusicBrainzTextRepresentation> n = dc.SetTextRepresentations.ToList();
+                LoggerBundle.Debug("Trying to load data of every model type...");
 
-                // shadow entities
-                List<MusicBrainzRecordAcoustId> z = dc.SetMusicBrainzRecordAcoustId.ToList();
-                List<MusicBrainzAliasMusicBrainzRecord> w = dc.SetMusicBrainzAliasMusicBrainzRecord.ToList();
-                List<MusicBrainzArtistCreditMusicBrainzRecord> o = dc.SetMusicBrainzArtistCreditMusicBrainzRecord.ToList();
-                List<MusicBrainzArtistMusicBrainzAlias> p = dc.SetMusicBrainzArtistMusicBrainzAlias.ToList();
-                List<MusicBrainzIsoCodeMusicBrainzArea> q = dc.SetMusicBrainzIsoCodeMusicBrainzArea.ToList();
-                List<MusicBrainzReleaseEventMusicBrainzRelease> r = dc.SetMusicBrainzReleaseEventMusicBrainzRelease.ToList();
-                List<MusicBrainzReleaseMusicBrainzAlias> s = dc.SetMusicBrainzReleaseMusicBrainzAlias.ToList();
-                List<MusicBrainzReleaseMusicBrainzArtistCredit> t = dc.SetMusicBrainzReleaseMusicBrainzArtistCredit.ToList();
-                List<MusicBrainzReleaseMusicBrainzRecord> u = dc.SetMusicBrainzReleaseMusicBrainzRecord.ToList();
-                List<MusicBrainzTagMusicBrainzRecord> v = dc.SetMusicBrainzTagMusicBrainzRecord.ToList();
+                foreach (Type t in _types)
+                {
+                    LoggerBundle.Trace($"Loading data for set of type '{t.Name}'...");
+                    MethodInfo setMethod = dc.GetType().GetMethods().First(x => x.Name.Equals("Set"));
+                    MethodInfo setMethodGeneric = setMethod.MakeGenericMethod(t);
+                    Object set = setMethodGeneric.Invoke(dc, new Object[] { });
+                    MethodInfo methodLoad = typeof(EntityFrameworkQueryableExtensions).GetMethods()
+                        .First(x => x.Name.Equals("Load"));
+                    MethodInfo methodLoadGeneric = methodLoad.MakeGenericMethod(t);
+                    methodLoadGeneric.Invoke(set
+                        , new[]
+                        {
+                            set
+                        });
+
+                    dc.SetTracks.Load();
+                    LoggerBundle.Trace("Loading data done.");
+                }
+
+                LoggerBundle.Debug("Done.");
             }
-        }
-
-        public void Push(Exception arg)
-        {
-            Console.WriteLine($"Exception: {arg.Message}");
         }
 
         private static void Main(String[] args)
         {
-            new Program();
+            try
+            {
+                new Program();
+            }
+            catch (Exception ex)
+            {
+                LoggerBundle.Error(ex);
+            }
+
+#if DEBUG
+            Console.ReadKey();
+#endif
         }
     }
 }

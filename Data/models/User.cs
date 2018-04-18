@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,9 @@ namespace ch.wuerth.tobias.mux.Data.models
         [ Required ]
         [ MaxLength(1024) ]
         public String Password { get; set; }
+
+        public virtual List<Invite> Invites { get; set; }
+
+        public virtual Invite Invite { get; set; }
     }
 }

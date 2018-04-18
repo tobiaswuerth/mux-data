@@ -11,7 +11,7 @@ namespace ch.wuerth.tobias.mux.Data.Test
 {
     internal class Program
     {
-        private static readonly HashSet<Type> _types = new HashSet<Type>
+        private static readonly HashSet<Type> Types = new HashSet<Type>
         {
             typeof(Track)
             , typeof(User)
@@ -38,15 +38,16 @@ namespace ch.wuerth.tobias.mux.Data.Test
             , typeof(MusicBrainzReleaseMusicBrainzArtistCredit)
             , typeof(MusicBrainzReleaseMusicBrainzRecord)
             , typeof(MusicBrainzTagMusicBrainzRecord)
+            , typeof(Invite)
         };
 
         private Program()
         {
-            using (DataContext dc = new DataContext(new DbContextOptions<DataContext>()))
+            using (DataContext dc = DataContextFactory.GetInstance())
             {
                 LoggerBundle.Debug("Trying to load data of every model type...");
 
-                foreach (Type t in _types)
+                foreach (Type t in Types)
                 {
                     LoggerBundle.Trace($"Loading data for set of type '{t.Name}'...");
                     MethodInfo setMethod = dc.GetType().GetMethods().First(x => x.Name.Equals("Set"));

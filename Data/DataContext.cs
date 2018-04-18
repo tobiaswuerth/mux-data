@@ -24,6 +24,7 @@ namespace ch.wuerth.tobias.mux.Data
                 LoggerBundle.Fatal("Could not load database config file", ex);
                 Environment.Exit(1);
             }
+            
             LoggerBundle.Debug("Context initialized.");
         }
 
@@ -49,32 +50,21 @@ namespace ch.wuerth.tobias.mux.Data
         public virtual DbSet<MusicBrainzIsoCode> SetIsoCodes { get; set; }
         public virtual DbSet<MusicBrainzTag> SetTags { get; set; }
         public virtual DbSet<MusicBrainzTextRepresentation> SetTextRepresentations { get; set; }
+        public virtual DbSet<Invite> SetInvites { get; set; }
 
         // shadow entities
         // these had to be added because of the switch from .net 4.x to .net core 2.x. EF in this version does not
         // support many-to-many references yet without defining it explicitly
         // https://docs.microsoft.com/en-us/ef/core/modeling/relationships#many-to-many
-        public virtual DbSet<MusicBrainzRecordAcoustId> SetMusicBrainzRecordAcoustId { get; set; }
 
+        public virtual DbSet<MusicBrainzRecordAcoustId> SetMusicBrainzRecordAcoustId { get; set; }
         public virtual DbSet<MusicBrainzAliasMusicBrainzRecord> SetMusicBrainzAliasMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistCreditMusicBrainzRecord> SetMusicBrainzArtistCreditMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzArtistMusicBrainzAlias> SetMusicBrainzArtistMusicBrainzAlias { get; set; }
         public virtual DbSet<MusicBrainzIsoCodeMusicBrainzArea> SetMusicBrainzIsoCodeMusicBrainzArea { get; set; }
-
-        public virtual DbSet<MusicBrainzReleaseEventMusicBrainzRelease> SetMusicBrainzReleaseEventMusicBrainzRelease
-        {
-            get;
-            set;
-        }
-
+        public virtual DbSet<MusicBrainzReleaseEventMusicBrainzRelease> SetMusicBrainzReleaseEventMusicBrainzRelease { get; set; }
         public virtual DbSet<MusicBrainzReleaseMusicBrainzAlias> SetMusicBrainzReleaseMusicBrainzAlias { get; set; }
-
-        public virtual DbSet<MusicBrainzReleaseMusicBrainzArtistCredit> SetMusicBrainzReleaseMusicBrainzArtistCredit
-        {
-            get;
-            set;
-        }
-
+        public virtual DbSet<MusicBrainzReleaseMusicBrainzArtistCredit> SetMusicBrainzReleaseMusicBrainzArtistCredit { get; set; }
         public virtual DbSet<MusicBrainzReleaseMusicBrainzRecord> SetMusicBrainzReleaseMusicBrainzRecord { get; set; }
         public virtual DbSet<MusicBrainzTagMusicBrainzRecord> SetMusicBrainzTagMusicBrainzRecord { get; set; }
 
@@ -216,6 +206,11 @@ namespace ch.wuerth.tobias.mux.Data
             {
                 x.HasMany(y => y.MusicBrainzArtistMusicBrainzAliases).WithOne(y => y.MusicBrainzArtist);
                 x.HasMany(y => y.Credits);
+            });
+            modelBuilder.Entity<Invite>(x =>
+            {
+                x.HasOne(y => y.CreateUser).WithMany(y => y.Invites);
+                x.HasOne(y => y.RegisteredUser).WithOne(y => y.Invite).IsRequired(false);
             });
 
             LoggerBundle.Trace("Model created.");

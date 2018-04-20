@@ -11,9 +11,10 @@ using System;
 namespace ch.wuerth.tobias.mux.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20180420095353_20180420T1152_UserCanInvite")]
+    partial class _20180420T1152_UserCanInvite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

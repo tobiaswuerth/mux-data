@@ -23,5 +23,8 @@ namespace ch.wuerth.tobias.mux.Data.models
         public virtual List<Invite> Invites { get; set; }
 
         public virtual Invite Invite { get; set; }
+
+        [ Required ]
+        public Boolean CanInvite { get; set; }
     }
 }

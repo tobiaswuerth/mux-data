@@ -51,6 +51,9 @@ namespace ch.wuerth.tobias.mux.Data
         public virtual DbSet<MusicBrainzTag> SetTags { get; set; }
         public virtual DbSet<MusicBrainzTextRepresentation> SetTextRepresentations { get; set; }
         public virtual DbSet<Invite> SetInvites { get; set; }
+        public virtual DbSet<Playlist> SetPlaylists { get; set; }
+        public virtual DbSet<PlaylistEntry> SetPlaylistEntries { get; set; }
+        public virtual DbSet<PlaylistPermission> SetPlaylistPermissions { get; set; }
 
         // shadow entities
         // these had to be added because of the switch from .net 4.x to .net core 2.x. EF in this version does not
@@ -84,7 +87,10 @@ namespace ch.wuerth.tobias.mux.Data
             base.OnModelCreating(modelBuilder);
 
             // join tables / cross tables
-            modelBuilder.Entity<MusicBrainzRecordAcoustId>(x => { x.HasKey("MusicBrainzRecordUniqueId", "AcoustIdUniqueId"); });
+            modelBuilder.Entity<MusicBrainzRecordAcoustId>(x =>
+            {
+                x.HasKey("MusicBrainzRecordUniqueId", "AcoustIdUniqueId");
+            });
             modelBuilder.Entity<MusicBrainzAliasMusicBrainzRecord>(x =>
             {
                 x.HasKey("MusicBrainzAliasUniqueId", "MusicBrainzRecordUniqueId");
@@ -123,7 +129,13 @@ namespace ch.wuerth.tobias.mux.Data
             });
 
             // index and references
-            modelBuilder.Entity<User>(x => { x.HasIndex(y => y.Username).IsUnique(); });
+            modelBuilder.Entity<User>(x =>
+            {
+                x.HasIndex(y => y.Username).IsUnique();
+                x.HasMany(y => y.Playlists).WithOne(y => y.CreateUser);
+                x.HasMany(y => y.PlaylistEntries).WithOne(y => y.CreateUser);
+                x.HasMany(y => y.PlaylistPermissions).WithOne(y => y.User);
+            });
             modelBuilder.Entity<AcoustId>(x =>
             {
                 x.HasIndex(y => y.Id).IsUnique();
@@ -211,6 +223,23 @@ namespace ch.wuerth.tobias.mux.Data
             {
                 x.HasOne(y => y.CreateUser).WithMany(y => y.Invites);
                 x.HasOne(y => y.RegisteredUser).WithOne(y => y.Invite).IsRequired(false);
+            });
+            modelBuilder.Entity<Playlist>(x =>
+            {
+                x.HasOne(y => y.CreateUser).WithMany(y => y.Playlists);
+                x.HasMany(y => y.PlaylistEntries).WithOne(y => y.Playlist);
+                x.HasMany(y => y.PlaylistPermissions).WithOne(y => y.Playlist);
+            });
+            modelBuilder.Entity<PlaylistEntry>(x =>
+            {
+                x.HasOne(y => y.CreateUser).WithMany(y => y.PlaylistEntries);
+                x.HasOne(y => y.Playlist).WithMany(y => y.PlaylistEntries);
+                x.HasOne(y => y.Track).WithMany(y => y.PlaylistEntries);
+            });
+            modelBuilder.Entity<PlaylistPermission>(x =>
+            {
+                x.HasOne(y => y.Playlist).WithMany(y => y.PlaylistPermissions);
+                x.HasOne(y => y.User).WithMany(y => y.PlaylistPermissions);
             });
 
             LoggerBundle.Trace("Model created.");

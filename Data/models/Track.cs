@@ -8,8 +8,6 @@ namespace ch.wuerth.tobias.mux.Data.models
     [ Table("Track") ]
     public class Track
     {
-        public virtual List<AcoustIdResult> AcoustIdResults { get; set; }
-
         [ Key ]
         public Int32 UniqueId { get; set; }
 
@@ -32,6 +30,10 @@ namespace ch.wuerth.tobias.mux.Data.models
 
         public String AcoustIdApiError { get; set; }
         public Int32? AcoustIdApiErrorCode { get; set; }
+
+        public virtual List<AcoustIdResult> AcoustIdResults { get; set; }
+
+        public virtual List<PlaylistEntry> PlaylistEntries { get; set; }
 
         public override String ToString()
         {

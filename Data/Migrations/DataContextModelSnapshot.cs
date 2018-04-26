@@ -301,6 +301,66 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
                     b.ToTable("MusicBrainzTextRepresentation");
                 });
 
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.Playlist"
+                , b =>
+                {
+                    b.Property<Int32>("UniqueId").ValueGeneratedOnAdd();
+
+                    b.Property<Int32>("CreateUserUniqueId");
+
+                    b.Property<String>("Name").IsRequired().HasMaxLength(64);
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("CreateUserUniqueId");
+
+                    b.ToTable("Playlist");
+                });
+
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.PlaylistEntry"
+                , b =>
+                {
+                    b.Property<Int32>("UniqueId").ValueGeneratedOnAdd();
+
+                    b.Property<Int32>("CreateUserUniqueId");
+
+                    b.Property<Int32>("PlaylistUniqueId");
+
+                    b.Property<String>("Title").IsRequired().HasMaxLength(1024);
+
+                    b.Property<Int32>("TrackUniqueId");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("CreateUserUniqueId");
+
+                    b.HasIndex("PlaylistUniqueId");
+
+                    b.HasIndex("TrackUniqueId");
+
+                    b.ToTable("PlaylistEntry");
+                });
+
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.PlaylistPermission"
+                , b =>
+                {
+                    b.Property<Int32>("UniqueId").ValueGeneratedOnAdd();
+
+                    b.Property<Boolean>("CanModify");
+
+                    b.Property<Int32>("PlaylistUniqueId");
+
+                    b.Property<Int32>("UserUniqueId");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("PlaylistUniqueId");
+
+                    b.HasIndex("UserUniqueId");
+
+                    b.ToTable("PlaylistPermission");
+                });
+
             modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.shadowentities.MusicBrainzAliasMusicBrainzRecord"
                 , b =>
                 {
@@ -545,6 +605,48 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
                     b.HasOne("ch.wuerth.tobias.mux.Data.models.MusicBrainzArea", "Area")
                         .WithMany("ReleaseEvents")
                         .HasForeignKey("Area_UniqueId");
+                });
+
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.Playlist"
+                , b =>
+                {
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.User", "CreateUser")
+                        .WithMany("Playlists")
+                        .HasForeignKey("CreateUserUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.PlaylistEntry"
+                , b =>
+                {
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.User", "CreateUser")
+                        .WithMany("PlaylistEntries")
+                        .HasForeignKey("CreateUserUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.Playlist", "Playlist")
+                        .WithMany("PlaylistEntries")
+                        .HasForeignKey("PlaylistUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.Track", "Track")
+                        .WithMany("PlaylistEntries")
+                        .HasForeignKey("TrackUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.PlaylistPermission"
+                , b =>
+                {
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.Playlist", "Playlist")
+                        .WithMany("PlaylistPermissions")
+                        .HasForeignKey("PlaylistUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ch.wuerth.tobias.mux.Data.models.User", "User")
+                        .WithMany("PlaylistPermissions")
+                        .HasForeignKey("UserUniqueId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ch.wuerth.tobias.mux.Data.models.shadowentities.MusicBrainzAliasMusicBrainzRecord"

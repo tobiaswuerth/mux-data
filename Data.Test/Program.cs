@@ -39,6 +39,9 @@ namespace ch.wuerth.tobias.mux.Data.Test
             , typeof(MusicBrainzReleaseMusicBrainzRecord)
             , typeof(MusicBrainzTagMusicBrainzRecord)
             , typeof(Invite)
+            , typeof(Playlist)
+            , typeof(PlaylistEntry)
+            , typeof(PlaylistPermission)
         };
 
         private Program()

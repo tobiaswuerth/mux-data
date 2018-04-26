@@ -20,11 +20,17 @@ namespace ch.wuerth.tobias.mux.Data.models
         [ MaxLength(1024) ]
         public String Password { get; set; }
 
-        public virtual List<Invite> Invites { get; set; }
+        [ Required ]
+        public Boolean CanInvite { get; set; }
 
         public virtual Invite Invite { get; set; }
 
-        [ Required ]
-        public Boolean CanInvite { get; set; }
+        public virtual List<Invite> Invites { get; set; }
+
+        public virtual List<Playlist> Playlists { get; set; }
+
+        public virtual List<PlaylistPermission> PlaylistPermissions { get; set; }
+
+        public virtual List<PlaylistEntry> PlaylistEntries { get; set; }
     }
 }

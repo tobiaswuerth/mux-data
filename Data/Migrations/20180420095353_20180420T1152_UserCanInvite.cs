@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ch.wuerth.tobias.mux.Data.Migrations
 {
@@ -8,18 +7,12 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "CanInvite",
-                table: "User",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<Boolean>("CanInvite", "User", nullable : false, defaultValue : false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "CanInvite",
-                table: "User");
+            migrationBuilder.DropColumn("CanInvite", "User");
         }
     }
 }

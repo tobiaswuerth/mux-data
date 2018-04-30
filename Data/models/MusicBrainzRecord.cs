@@ -23,7 +23,7 @@ namespace ch.wuerth.tobias.mux.Data.models
         [ MaxLength(40) ]
         public String MusicbrainzId { get; set; }
 
-        [ MaxLength(255) ]
+        [ MaxLength(1024) ]
         public String Title { get; set; }
 
         [ MaxLength(4096) ]

@@ -6,6 +6,15 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
 {
     public partial class _20180426T1053_Playlist : Migration
     {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable("PlaylistEntry");
+
+            migrationBuilder.DropTable("PlaylistPermission");
+
+            migrationBuilder.DropTable("Playlist");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable("Playlist"
@@ -94,15 +103,6 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
             migrationBuilder.CreateIndex("IX_PlaylistPermission_PlaylistUniqueId", "PlaylistPermission", "PlaylistUniqueId");
 
             migrationBuilder.CreateIndex("IX_PlaylistPermission_UserUniqueId", "PlaylistPermission", "UserUniqueId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable("PlaylistEntry");
-
-            migrationBuilder.DropTable("PlaylistPermission");
-
-            migrationBuilder.DropTable("Playlist");
         }
     }
 }

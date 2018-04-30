@@ -192,7 +192,7 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
 
                     b.Property<String>("MusicbrainzId").IsRequired().HasMaxLength(40);
 
-                    b.Property<String>("Title").HasMaxLength(255);
+                    b.Property<String>("Title").HasMaxLength(1024);
 
                     b.Property<Boolean?>("Video");
 

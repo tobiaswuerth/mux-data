@@ -6,6 +6,17 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
 {
     public partial class _20180418T1520_Invite : Migration
     {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey("FK_User_Invite_InviteUniqueId", "User");
+
+            migrationBuilder.DropTable("Invite");
+
+            migrationBuilder.DropIndex("IX_User_InviteUniqueId", "User");
+
+            migrationBuilder.DropColumn("InviteUniqueId", "User");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Int32>("InviteUniqueId", "User", nullable : true);
@@ -45,17 +56,6 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
                 , "Invite"
                 , principalColumn : "UniqueId"
                 , onDelete : ReferentialAction.Restrict);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey("FK_User_Invite_InviteUniqueId", "User");
-
-            migrationBuilder.DropTable("Invite");
-
-            migrationBuilder.DropIndex("IX_User_InviteUniqueId", "User");
-
-            migrationBuilder.DropColumn("InviteUniqueId", "User");
         }
     }
 }

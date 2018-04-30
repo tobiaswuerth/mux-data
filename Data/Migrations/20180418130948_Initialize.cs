@@ -6,6 +6,57 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
 {
     public partial class Initialize : Migration
     {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable("AcoustIdResult");
+
+            migrationBuilder.DropTable("MusicBrainzAliasMusicBrainzRecord");
+
+            migrationBuilder.DropTable("MusicBrainzArtistCreditMusicBrainzRecord");
+
+            migrationBuilder.DropTable("MusicBrainzArtistMusicBrainzAlias");
+
+            migrationBuilder.DropTable("MusicBrainzIsoCodeMusicBrainzArea");
+
+            migrationBuilder.DropTable("MusicBrainzRecordAcoustId");
+
+            migrationBuilder.DropTable("MusicBrainzReleaseEventMusicBrainzRelease");
+
+            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzAlias");
+
+            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzArtistCredit");
+
+            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzRecord");
+
+            migrationBuilder.DropTable("MusicBrainzTagMusicBrainzRecord");
+
+            migrationBuilder.DropTable("User");
+
+            migrationBuilder.DropTable("Track");
+
+            migrationBuilder.DropTable("MusicBrainzIsoCode");
+
+            migrationBuilder.DropTable("AcoustId");
+
+            migrationBuilder.DropTable("MusicBrainzReleaseEvent");
+
+            migrationBuilder.DropTable("MusicBrainzAlias");
+
+            migrationBuilder.DropTable("MusicBrainzArtistCredit");
+
+            migrationBuilder.DropTable("MusicBrainzRelease");
+
+            migrationBuilder.DropTable("MusicBrainzRecord");
+
+            migrationBuilder.DropTable("MusicBrainzTag");
+
+            migrationBuilder.DropTable("MusicBrainzArea");
+
+            migrationBuilder.DropTable("MusicBrainzArtist");
+
+            migrationBuilder.DropTable("MusicBrainzTextRepresentation");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable("AcoustId"
@@ -607,57 +658,6 @@ namespace ch.wuerth.tobias.mux.Data.Migrations
             migrationBuilder.CreateIndex("IX_Track_Path", "Track", "Path", unique : true);
 
             migrationBuilder.CreateIndex("IX_User_Username", "User", "Username", unique : true);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable("AcoustIdResult");
-
-            migrationBuilder.DropTable("MusicBrainzAliasMusicBrainzRecord");
-
-            migrationBuilder.DropTable("MusicBrainzArtistCreditMusicBrainzRecord");
-
-            migrationBuilder.DropTable("MusicBrainzArtistMusicBrainzAlias");
-
-            migrationBuilder.DropTable("MusicBrainzIsoCodeMusicBrainzArea");
-
-            migrationBuilder.DropTable("MusicBrainzRecordAcoustId");
-
-            migrationBuilder.DropTable("MusicBrainzReleaseEventMusicBrainzRelease");
-
-            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzAlias");
-
-            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzArtistCredit");
-
-            migrationBuilder.DropTable("MusicBrainzReleaseMusicBrainzRecord");
-
-            migrationBuilder.DropTable("MusicBrainzTagMusicBrainzRecord");
-
-            migrationBuilder.DropTable("User");
-
-            migrationBuilder.DropTable("Track");
-
-            migrationBuilder.DropTable("MusicBrainzIsoCode");
-
-            migrationBuilder.DropTable("AcoustId");
-
-            migrationBuilder.DropTable("MusicBrainzReleaseEvent");
-
-            migrationBuilder.DropTable("MusicBrainzAlias");
-
-            migrationBuilder.DropTable("MusicBrainzArtistCredit");
-
-            migrationBuilder.DropTable("MusicBrainzRelease");
-
-            migrationBuilder.DropTable("MusicBrainzRecord");
-
-            migrationBuilder.DropTable("MusicBrainzTag");
-
-            migrationBuilder.DropTable("MusicBrainzArea");
-
-            migrationBuilder.DropTable("MusicBrainzArtist");
-
-            migrationBuilder.DropTable("MusicBrainzTextRepresentation");
         }
     }
 }
